@@ -1,7 +1,7 @@
 #include <iostream>
 #include <unordered_map>
 using namespace std;
-// 2 0 0 2 0 2 2 1 1 1 1
+//  2 0 0 2 0 2 2 1 1 1 1
 
 class StateNode
 {
@@ -12,6 +12,7 @@ class StateNode
 
 protected:
     unordered_map<int, StateNode *> Reference;
+    unordered_map<int,char> Sigma;
 
 public:
     // Constructors
@@ -57,7 +58,7 @@ public:
         cout << "StateNumber of the given State:" << ptr->getStateNo() << "\nAcceting State:" << ptr->getFlag() << "\nN: " << ptr->getN() << "\nAddress: " << ptr << endl;
         for (int i = 0; i < loop; i++)
         {
-            cout << "StateNumber of the given State on symbol " << i << " : "
+            cout << "StateNumber of the given State on symbol: " << Sigma[i] << " : "
                  << "\nTransitionState[i]:" << TransitionStates[i] << "\nAcceting State:" << Reference[TransitionStates[i]]->getFlag() << endl
                  << "Address:" << Reference[TransitionStates[i]] << endl;
             // cout<<TransitionStates[i]->getStateNo()<<endl;T
@@ -76,6 +77,11 @@ public:
             cout << "Accepting State:" << Reference[StateNumber]->flag << endl;
             cout << "Address of the State" << Reference[StateNumber] << endl;
             return Reference[StateNumber];
+        }
+    }
+    void getSigma(){
+        for(auto it:Sigma){
+            cout<<"Code:"<<it.first<<"::"<<"Symbol:"<<it.second<<endl;
         }
     }
 
@@ -98,7 +104,15 @@ public:
     {
         Reference[StateNumber] = newState;
     }
-
+     void createSigma(int N){
+        cout<<"Enter the symbols of the language one after another:"<<endl;
+        for(int i=0;i<N;i++){
+            char ch;
+            cin>>ch;
+            Sigma[i]=ch;
+            cout<<"Symbol successfully added!\n"<<endl;
+             }
+     }
     // Checks if the State already exists
     bool IsState(int StateNumber)
     {
@@ -112,9 +126,7 @@ public:
         }
     }
 
-    void takeInput()
-    {
-    }
+
 
     int createStateNode(int N)
     {
@@ -147,26 +159,21 @@ public:
         StateNode *newState = new StateNode(StateNumber, flag, N);
         setReference(StateNumber, newState);
 
-        cout << "StateNumber of the given State:" << newState->getStateNo() << "\nAcceting State:" << newState->getFlag() << "N:" << N << endl;
+        // cout << "StateNumber of the given State:" << newState->getStateNo() << "\nAcceting State:" << newState->getFlag() << "N:" << N << endl;
         // Creating States for every transition
         for (int i = 0; i < newState->N; i++)
         {
-            cout << "For input symbol " << i << " of State with Statenumber:" << newState->StateNumber << "Address:" << newState << endl;
+            cout << "For input symbol: " << Sigma[i] << "transition of State with Statenumber:" << newState->StateNumber <<endl;
+            // cout<< "Address:" << newState << endl;
             newState->TransitionStates[i] = createStateNode(N);
             // TransitionStates[i]=getReference(StateNumber);
-            cout<<"For State Number:"<<StateNumber<<" TransitionState:"<<i<<":"<<TransitionStates[i]<<endl;
+            // cout<<"For State Number:"<<StateNumber<<" TransitionState:"<<i<<":"<<TransitionStates[i]<<endl;
         }
-         cout<<"StateNumber is:"<<StateNumber<<endl;
+        //  cout<<"StateNumber is:"<<StateNumber<<endl;
 
         return StateNumber;
     }
 
-    // Destructor
-    // ~StateNode()
-    // {
-    //     cout << "DESTRUCTOR CALLED FOR STATE-NODES" << endl;
-    //     delete [] TransitionStates; 
-    // }
 };
 
 class DFA : protected StateNode
@@ -184,26 +191,37 @@ public:
     {
         cout << "Enter the number of symbols in the language" << endl;
         cin >> N;
+        createSigma(N);
         StartNode = createStateNode(N);
         // StartNode = newStateNode;
     }
 
-    bool checkString(DFA F)
+   void checkString(DFA F)
     {
         StateNode *ptr = Reference[F.StartNode];
         int currentState=-1;
         string s;
         cout << "Enter the String that is tobe checked" << endl;
         cin >> s;
+        int x;
         for (int i = 0; s[i] != '\0'; i++)
         {
-            int x = s[i] - 48;
+          for(auto it: Sigma){
+            if(it.second==s[i]){
+                x=it.first;
+            }
+          }
             cout << x << endl;
             currentState = ptr->getTransitionState(x);
             ptr=Reference[currentState];
             cout << "Address:" << ptr << " StateNumber:" << ptr->getStateNo() << " Flag:" << ptr->getFlag() << endl;
         }
-        return Reference[currentState]->getFlag();
+        if(Reference[currentState]->getFlag()){
+            cout<<"The given string will be accepted"<<endl;
+        }
+        else{
+            cout<<"The given string will be rejected"<<endl;
+        }
     }
 
     // getters
@@ -229,31 +247,27 @@ public:
 
     void ShowDFA()
     {
-
         cout << "Showing Data of DFA" << endl;
         StateNode *ptr = NULL;
         cout << "Address of Starting Node:" << Reference[this->StartNode] << endl;
         ptr = Reference[this->StartNode];
         getStateNodeData(ptr);
     }
-    DFA *createDFA()
-    {
-    }
 
-    // Destructor
-    // ~DFA()
-    // {
-    //     cout << "Destructor of DFA called" << endl;
-    // }
 };
 
 int main()
 {
-
+    
     DFA F;
     // F.ShowReferenceTable();
-    F.CheckStates();
+bool choice=1;
+    do{
+ F.checkString(F);
+    }while(choice);
+
+    // F.CheckStates();
     // F.ShowDFA();
-    cout<<F.checkString(F);
+   
     return 0;
 }
