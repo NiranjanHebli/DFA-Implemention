@@ -1,7 +1,8 @@
 #include <iostream>
 #include <unordered_map>
 using namespace std;
-//  2 0 0 2 0 2 2 1 1 1 1
+
+//  2 a b 0 0 1 0 2 0 4 0 4 4 3 1 2 4 4 4 
 
 class StateNode
 {
@@ -55,12 +56,12 @@ public:
     void getStateNodeData(StateNode *ptr)
     {
         int loop = ptr->getN();
-        cout << "StateNumber of the given State:" << ptr->getStateNo() << "\nAcceting State:" << ptr->getFlag() << "\nN: " << ptr->getN() << "\nAddress: " << ptr << endl;
+        cout << "StateNumber of the given State: " << ptr->getStateNo() << "\nAcceting State: " << ptr->getFlag() << "\nN: " << ptr->getN() << "\nAddress: " << ptr << endl;
         for (int i = 0; i < loop; i++)
         {
             cout << "StateNumber of the given State on symbol: " << Sigma[i] << " : "
-                 << "\nTransitionState[i]:" << TransitionStates[i] << "\nAcceting State:" << Reference[TransitionStates[i]]->getFlag() << endl
-                 << "Address:" << Reference[TransitionStates[i]] << endl;
+                 << "\nTransitionState[i]: " << TransitionStates[i] << "\nAcceting State: " << Reference[TransitionStates[i]]->getFlag() << endl
+                 << "Address: " << Reference[TransitionStates[i]] << endl;
             // cout<<TransitionStates[i]->getStateNo()<<endl;T
         }
         // getStateNodeData(Reference[TransitionStates[0]]);
@@ -163,7 +164,7 @@ public:
         // Creating States for every transition
         for (int i = 0; i < newState->N; i++)
         {
-            cout << "For input symbol: " << Sigma[i] << "transition of State with Statenumber:" << newState->StateNumber <<endl;
+            cout << "For input symbol: " << Sigma[i] << " transition of State with Statenumber: " << newState->StateNumber <<endl;
             // cout<< "Address:" << newState << endl;
             newState->TransitionStates[i] = createStateNode(N);
             // TransitionStates[i]=getReference(StateNumber);
@@ -261,10 +262,9 @@ int main()
     
     DFA F;
     // F.ShowReferenceTable();
-bool choice=1;
-    do{
+
  F.checkString(F);
-    }while(choice);
+ 
 
     // F.CheckStates();
     // F.ShowDFA();
