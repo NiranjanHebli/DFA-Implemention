@@ -2,7 +2,7 @@
 #include <unordered_map>
 using namespace std;
 
-//  2 a b 0 0 1 0 2 0 4 0 4 4 3 1 2 4 4 4 
+//  2 a b 0 0 1 0 2 0 4 0 4 4 3 1 2 4 4 4
 
 class StateNode
 {
@@ -13,7 +13,7 @@ class StateNode
 
 protected:
     unordered_map<int, StateNode *> Reference;
-    unordered_map<int,char> Sigma;
+    unordered_map<int, char> Sigma;
 
 public:
     // Constructors
@@ -80,9 +80,12 @@ public:
             return Reference[StateNumber];
         }
     }
-    void getSigma(){
-        for(auto it:Sigma){
-            cout<<"Code:"<<it.first<<"::"<<"Symbol:"<<it.second<<endl;
+    void getSigma()
+    {
+        for (auto it : Sigma)
+        {
+            cout << "Code:" << it.first << "::"
+                 << "Symbol:" << it.second << endl;
         }
     }
 
@@ -105,15 +108,18 @@ public:
     {
         Reference[StateNumber] = newState;
     }
-     void createSigma(int N){
-        cout<<"Enter the symbols of the language one after another:"<<endl;
-        for(int i=0;i<N;i++){
+    void createSigma(int N)
+    {
+        cout << "Enter the symbols of the language one after another:" << endl;
+        for (int i = 0; i < N; i++)
+        {
             char ch;
-            cin>>ch;
-            Sigma[i]=ch;
-            cout<<"Symbol successfully added!\n"<<endl;
-             }
-     }
+            cin >> ch;
+            Sigma[i] = ch;
+            cout << "Symbol successfully added!\n"
+                 << endl;
+        }
+    }
     // Checks if the State already exists
     bool IsState(int StateNumber)
     {
@@ -127,11 +133,9 @@ public:
         }
     }
 
-
-
     int createStateNode(int N)
     {
-        cout << "Enter the corresponding State Number for the given State" << endl;
+        cout << "Enter the corresponding State Number for the given State:" << endl;
         int StateNumber = -1;
 
         // Checking if the state already exists
@@ -164,7 +168,7 @@ public:
         // Creating States for every transition
         for (int i = 0; i < newState->N; i++)
         {
-            cout << "For input symbol: " << Sigma[i] << " transition of State with Statenumber: " << newState->StateNumber <<endl;
+            cout << "For input symbol: " << Sigma[i] << " transition of State with Statenumber: " << newState->StateNumber << endl;
             // cout<< "Address:" << newState << endl;
             newState->TransitionStates[i] = createStateNode(N);
             // TransitionStates[i]=getReference(StateNumber);
@@ -174,7 +178,6 @@ public:
 
         return StateNumber;
     }
-
 };
 
 class DFA : protected StateNode
@@ -197,77 +200,83 @@ public:
         // StartNode = newStateNode;
     }
 
-   void checkString(DFA F)
+    void checkString()
     {
-        StateNode *ptr = Reference[F.StartNode];
-        int currentState=-1;
+        StateNode *ptr = Reference[this->StartNode];
+        int currentState = -1;
         string s;
-        cout << "Enter the String that is tobe checked" << endl;
+        cout << "Enter the String that is to-be checked:" << endl;
         cin >> s;
         int x;
         for (int i = 0; s[i] != '\0'; i++)
         {
-          for(auto it: Sigma){
-            if(it.second==s[i]){
-                x=it.first;
+            for (auto it : Sigma)
+            {
+                if (it.second == s[i])
+                {
+                    x = it.first;
+                }
             }
-          }
-            cout << x << endl;
+            // cout << x << endl;
             currentState = ptr->getTransitionState(x);
-            ptr=Reference[currentState];
-            cout << "Address:" << ptr << " StateNumber:" << ptr->getStateNo() << " Flag:" << ptr->getFlag() << endl;
+            ptr = Reference[currentState];
+            // cout << "Address:" << ptr << " StateNumber:" << ptr->getStateNo() << " Flag:" << ptr->getFlag() << endl;
         }
-        if(Reference[currentState]->getFlag()){
-            cout<<"The given string will be accepted"<<endl;
+        if (Reference[currentState]->getFlag())
+        {
+            cout << "The given string will be accepted by the DFA" << endl;
         }
-        else{
-            cout<<"The given string will be rejected"<<endl;
+        else
+        {
+            cout << "The given string will be rejected by the DFA" << endl;
         }
     }
 
     // getters
     void ShowReferenceTable()
     {
-        cout<<endl<<"----------------------------DISPLAYING REFERENCE TABLE--------------------------------"<<endl<<endl;
+        cout << endl
+             << "----------------------------DISPLAYING REFERENCE TABLE--------------------------------" << endl
+             << endl;
         for (auto it : Reference)
         {
             cout << "StateNo: " << it.first << "\nAddress: " << it.second << endl;
         }
-        cout<<endl<<endl<<"--------------------------------------------------------------------------------------"<<endl;
-
+        cout << endl
+             << endl
+             << "--------------------------------------------------------------------------------------" << endl;
     }
-    void CheckStates(){
-        cout<<endl<<"----------------------------DISPLAYING All States Data TABLE--------------------------------"<<endl<<endl;
+    void CheckStates()
+    {
+        cout << endl
+             << "----------------------------DISPLAYING All States Data TABLE--------------------------------" << endl
+             << endl;
         for (auto it : Reference)
         {
-            cout << "StateNo: " << it.first << "\nAddress: " << it.second <<"\nFlag:"<<it.second->getFlag()<<"\nNumberOfTransitions:"<<it.second->getN()<<"\nTransition on input 0:"<<it.second->getTransitionState(0)<<"\nTransition on input 1:"<<it.second->getTransitionState(1)<<endl;
+            cout << "StateNo: " << it.first << "\nAddress: " << it.second << "\nFlag:" << it.second->getFlag() << "\nNumberOfTransitions:" << it.second->getN() << "\nTransition on input 0:" << it.second->getTransitionState(0) << "\nTransition on input 1:" << it.second->getTransitionState(1) << endl;
         }
-        cout<<endl<<endl<<"--------------------------------------------------------------------------------------"<<endl;
-
+        cout << endl
+             << endl
+             << "--------------------------------------------------------------------------------------" << endl;
     }
 
-    void ShowDFA()
-    {
-        cout << "Showing Data of DFA" << endl;
-        StateNode *ptr = NULL;
-        cout << "Address of Starting Node:" << Reference[this->StartNode] << endl;
-        ptr = Reference[this->StartNode];
-        getStateNodeData(ptr);
-    }
 
 };
 
 int main()
 {
-    
+
     DFA F;
     // F.ShowReferenceTable();
-
- F.checkString(F);
- 
+    bool choice = true;
+    do
+    {
+        F.checkString();
+    }
+    while(choice);
 
     // F.CheckStates();
-    // F.ShowDFA();
-   
+
+
     return 0;
 }
