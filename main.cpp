@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include <unordered_map>
 using namespace std;
 
@@ -60,12 +61,10 @@ public:
         for (int i = 0; i < loop; i++)
         {
             cout << "StateNumber of the given State on symbol: " << Sigma[i] << " : "
-                 << "\nTransitionState[i]: " << TransitionStates[i] << "\nAcceting State: " << Reference[TransitionStates[i]]->getFlag() << endl
-                 << "Address: " << Reference[TransitionStates[i]] << endl;
-            // cout<<TransitionStates[i]->getStateNo()<<endl;T
+                 << "\nTransitionState[i]: " << TransitionStates[i] << endl;
+            //  cout<< "\nAcceting State: " << Reference[TransitionStates[i]]->getFlag() << endl;
+            //  cout<< "Address: " << Reference[TransitionStates[i]] << endl;
         }
-        // getStateNodeData(Reference[TransitionStates[0]]);
-        // getStateNodeData(Reference[TransitionStates[1]]);
     }
     // Gets address of the State of the given StateNumber
     StateNode *getReference(int StateNumber)
@@ -89,6 +88,21 @@ public:
         }
     }
 
+    void showSigma(int N)
+    {
+        int x = N;
+        cout << "Sigma = { ";
+        for (auto it : Sigma)
+        {
+            x = x - 1;
+            cout << it.second;
+            if (x == 0)
+                break;
+            cout << " , ";
+        }
+        cout << " }" << endl;
+    }
+
     // Setters
     void setFlag(bool flag)
     {
@@ -108,7 +122,7 @@ public:
     {
         Reference[StateNumber] = newState;
     }
-    void createSigma(int N)
+    void setSigma(int N)
     {
         cout << "Enter the symbols of the language one after another:" << endl;
         for (int i = 0; i < N; i++)
@@ -195,7 +209,8 @@ public:
     {
         cout << "Enter the number of symbols in the language" << endl;
         cin >> N;
-        createSigma(N);
+        setSigma(N);
+        showSigma(N);
         StartNode = createStateNode(N);
         // StartNode = newStateNode;
     }
@@ -259,24 +274,21 @@ public:
              << endl
              << "--------------------------------------------------------------------------------------" << endl;
     }
-
-
 };
 
 int main()
 {
 
     DFA F;
+    // used to clear the console
+    system("CLS");
     // F.ShowReferenceTable();
     bool choice = true;
     do
     {
         F.checkString();
-    }
-    while(choice);
-
+    } while (choice);
     // F.CheckStates();
-
 
     return 0;
 }
