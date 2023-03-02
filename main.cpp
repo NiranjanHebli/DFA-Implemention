@@ -239,11 +239,11 @@ public:
         }
         if (Reference[currentState]->getFlag())
         {
-            cout << "The given string will be accepted by the DFA" << endl;
+            cout << "The given string will be accepted by the DFA" << endl<<endl;
         }
         else
         {
-            cout << "The given string will be rejected by the DFA" << endl;
+            cout << "The given string will be rejected by the DFA" << endl<<endl;
         }
     }
 
