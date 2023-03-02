@@ -15,6 +15,7 @@ class StateNode
 protected:
     unordered_map<int, StateNode *> Reference;
     unordered_map<int, char> Sigma;
+    
 
 public:
     // Constructors
