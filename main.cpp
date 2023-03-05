@@ -15,7 +15,7 @@ class StateNode
 protected:
     unordered_map<int, StateNode *> Reference;
     unordered_map<int, char> Sigma;
-    
+
 
 public:
     // Constructors
@@ -226,13 +226,21 @@ public:
         int x;
         for (int i = 0; s[i] != '\0'; i++)
         {
+       bool flag=false;
             for (auto it : Sigma)
             {
+                 
                 if (it.second == s[i])
                 {
                     x = it.first;
+                    flag=true;
                 }
             }
+            if(!flag){
+                 cout << "The given string will be rejected by the DFA" << endl<<endl;
+                 return;
+            }
+
             // cout << x << endl;
             currentState = ptr->getTransitionState(x);
             ptr = Reference[currentState];
